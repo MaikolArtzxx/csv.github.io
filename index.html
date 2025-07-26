@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+          --background-color: #0f1923;
+        }
+        body {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background-color: var(--background-color);
+          margin: 0;
+          font-family: 'Rajdhani', sans-serif;
+        }
+        
+        /* Hamburger Menu */
+        .hamburger-menu {
+          position: fixed;
+          top: 20px;
+          left: 20px;
+          z-index: 1000;
+        }
+        
+        .hamburger-icon {
+          width: 30px;
+          height: 30px;
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 5px;
+          position: relative;
+        }
+        
+        .hamburger-line {
+          width: 25px;
+          height: 2px;
+          background-color: #ffffff;
+          transition: all 0.3s ease;
+          position: absolute;
+        }
+        
+        .hamburger-line:nth-child(1) {
+          top: 8px;
+        }
+        
+        .hamburger-line:nth-child(2) {
+          top: 50%;
+          transform: translateY(-50%);
+        }
+        
+        .hamburger-line:nth-child(3) {
+          bottom: 8px;
+        }
+        
+        .hamburger-icon.active .hamburger-line:nth-child(1) {
+          top: 50%;
+          transform: translateY(-50%) rotate(45deg);
+        }
+        
+        .hamburger-icon.active .hamburger-line:nth-child(2) {
+          opacity: 0;
+        }
+        
+        .hamburger-icon.active .hamburger-line:nth-child(3) {
+          bottom: 50%;
+          transform: translateY(50%) rotate(-45deg);
+        }
+        
+        .menu-overlay {
+          position: fixed;
+          top: 0;
+          left: -300px;
+          width: 300px;
+          height: 100vh;
+          background-color: rgba(15, 25, 35, 0.95);
+          backdrop-filter: blur(10px);
+          transition: left 0.3s ease;
+          z-index: 999;
+          display: flex;
+          flex-direction: column;
+          padding-top: 80px;
+        }
+        
+        .menu-overlay.active {
+          left: 0;
+        }
+        
+        .menu-item {
+          padding: 20px 30px;
+          color: #ffffff;
+          text-decoration: none;
+          font-size: 18px;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          transition: all 0.3s ease;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          letter-spacing: 1px;
+        }
+        
+        .menu-item:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+          transform: translateX(10px);
+        }
+        
+        .menu-item.youtube:hover {
+          color: #ff0000;
+        }
+        
+        .menu-item.discord:hover {
+          color: #5865f2;
+        }
+        .btn {
+          /* Clean style */
+          -moz-appearance: none;
+          -webkit-appearance: none;
+          appearance: none;
+          border: none;
+          background: none;
+          padding: 0;
+          color: var(--button-text-color);
+          cursor: pointer;
+          text-decoration: none;
+          /* Clean style */
+          
+          --button-text-color: #000000;
+          --button-text-color-hover: #ffffff;
+          --border-color: #7D8082;
+          --button-background-color: #ffffff;
+          --highlight-color: #000000;
+          --button-inner-border-color: transparent;
+          --button-bits-color: #000000;
+          --button-bits-color-hover: #ffffff;
+          
+          position: relative;
+          padding: 8px;
+          margin-bottom: 20px;
+          text-transform: uppercase;
+          font-weight: bold;
+          font-size: 14px;
+          transition: all .15s ease;
+        }
+        .btn::before,
+        .btn::after {
+          content: '';
+          display: block;
+          position: absolute;
+          right: 0; left: 0;
+          height: calc(50% - 5px);
+          border: 1px solid var(--border-color);
+          transition: all .15s ease;
+        }
+        .btn::before {
+          top: 0;
+          border-bottom-width: 0;
+        }
+        .btn::after {
+          bottom: 0;
+          border-top-width: 0;
+        }
+        .btn:active,
+        .btn:focus {
+          outline: none;
+        }
+        .btn:active::before,
+        .btn:active::after {
+          right: 3px;
+          left: 3px;
+        }
+        .btn:active::before {
+          top: 3px;
+        }
+        .btn:active::after {
+          bottom: 3px;
+        }
+        .btn__inner {
+          position: relative;
+          display: block;
+          padding: 20px 30px;
+          background-color: var(--button-background-color);
+          overflow: hidden;
+          box-shadow: inset 0px 0px 0px 1px var(--button-inner-border-color);
+        }
+        .btn__inner::before {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 0; left: 0;
+          width: 2px;
+          height: 2px;
+          background-color: var(--button-bits-color);
+        }
+        .btn__inner::after {
+          content: '';
+          display: block;
+          position: absolute;
+          right: 0; bottom: 0;
+          width: 4px;
+          height: 4px;
+          background-color: var(--button-bits-color);
+          transition: all .2s ease;
+        }
+        .btn__slide {
+          display: block;
+          position: absolute;
+          top: 0; bottom: -1px; left: -8px;
+          width: 0;
+          background-color: var(--highlight-color);
+          transform: skew(-15deg);
+          transition: all .2s ease;
+        }
+        .btn__content {
+          position: relative;
+        }
+        .btn:hover {
+          color: var(--button-text-color-hover);
+        }
+        .btn:hover .btn__slide {
+          width: calc(100% + 15px);
+        }
+        .btn:hover .btn__inner::after {
+          background-color: var(--button-bits-color-hover);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu">
+        <div class="hamburger-icon" onclick="toggleMenu()">
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+        </div>
+    </div>
+    
+    <!-- Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay">
+        <a href="https://www.youtube.com/@MaikolArtzx" target="_blank" class="menu-item youtube">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+            YouTube
+        </a>
+        <a href="https://dsc.gg/csv-official" target="_blank" class="menu-item discord">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.211.375-.445.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+            </svg>
+            Discord
+        </a>
+    </div>
+
+    <h1 style="color: #ffffff; text-align: center; margin-bottom: 40px; font-size: 48px; font-weight: 700; letter-spacing: 2px;">CSV</h1>
+    
+    <a href="#" class="btn">
+        <span class="btn__inner">
+            <span class="btn__slide"></span>
+            <span class="btn__content">Download</span>
+        </span>
+    </a>
+    
+    <script>
+        function toggleMenu() {
+            const hamburgerIcon = document.querySelector('.hamburger-icon');
+            const menuOverlay = document.getElementById('menuOverlay');
+            
+            hamburgerIcon.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+        }
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const hamburgerMenu = document.querySelector('.hamburger-menu');
+            const menuOverlay = document.getElementById('menuOverlay');
+            
+            if (!hamburgerMenu.contains(event.target) && !menuOverlay.contains(event.target)) {
+                hamburgerIcon.classList.remove('active');
+                menuOverlay.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
